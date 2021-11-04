@@ -19,4 +19,16 @@ from telegram.ext import CommandHandler
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
+#end
+
+# print ddl list
+from ModeCode.Deadline import *
+
+def ddl(update, context):
+    msg_list = getddl()
+    context.bot.send_message(chat_id=update.effective_chat.id, text=msg_list[0])
+
+ddl_handler = CommandHandler('ddl', ddl)
+dispatcher.add_handler(ddl_handler)
+
 updater.start_polling()
