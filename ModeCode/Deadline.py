@@ -49,11 +49,42 @@ def get_ddl_msg(ddl_list):
 def ddl(update, context):
     ddl_list = load_json()
     if (len(context.args) == 0):
-        print(get_ddl_msg(ddl_list))
+        # print(get_ddl_msg(ddl_list))
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
     elif context.args[0] == "add":
-        print("add")
+        # print("add")
+        if (len(context.args) != 3):
+            context.bot.send_message(
+                chat_id=update.effective_chat.id, text="Wrong number args!")
+#            msg_str += "{id} \n"
+#            msg_str += "Example: **\n"
+#            context.bot.send_message(chat_id=update.effective_chat.id,
+#                                     parse_mode=ParseMode.MARKDOWN_V2, text=msg_str)
+        else:
+            Exc = False
+            try:
+                update_datetime = datetime.datetime.fromisoformat(
+                    context.args[1])
+            except Exception:
+                Exc = True
+                context.bot.send_message(
+                    chat_id=update.effective_chat.id, text=("Invalid isoformat string!" + context.args[1]))
+            finally:
+                pass
+            if (Exc == False and (context.args[2] != "")):
+                if update_datetime.tzinfo == None:
+                    update_datetime = datetime.datetime.fromisoformat(
+                        update_datetime.isoformat()+"+08:00")
+                temp = {'deadline': update_datetime.isoformat(),
+                        'todo': context.args[2]}
+                ddl_list.append(temp)
+                # print(ddl_list)
+                save_json(src=ddl_list)
+            elif Exc == False:
+                context.bot.send_message(
+                    chat_id=update.effective_chat.id, text="Invilid args(3nd)! " + "'" + context.args[2] + "'")
+
     elif context.args[0] == "update":
         if (len(context.args) != 4):
             context.bot.send_message(
@@ -92,13 +123,27 @@ def ddl(update, context):
                     context.bot.send_message(
                         chat_id=update.effective_chat.id, text="Invilid args (3rd)! " + "'" + context.args[2] + "'")
         else:
-            print("False")
+            context.bot.send_message(
+                chat_id=update.effective_chat.id, text="Invilid args (2nd)! " + "'" + context.args[1] + "'")
 #        context.bot.send_message(chat_id=update.effective_chat.id,
 #                                 parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
     elif context.args[0] == "finish":
-        print("finish")
+        # print("finish")
+        if (len(context.args) != 2):
+            context.bot.send_message(
+                chat_id=update.effective_chat.id, text="Wrong number args!")
+        elif (context.args[1].isdigit()):
+            finish_id = int(context.args[1])
+            if (finish_id >= len(ddl_list)):
+                context.bot.send_message(
+                    chat_id=update.effective_chat.id, text="Invilid args!")
+            else:
+                ddl_list.pop(finish_id)
+                # print(ddl_list)
+                save_json(src=ddl_list)
     else:
-        print("Invalid arguement!")
+        context.bot.send_message(
+            chat_id=update.effective_chat.id, text="Invilid command! " + "'" + context.args[0] + "'")
 
 
 if __name__ == "__main__":
