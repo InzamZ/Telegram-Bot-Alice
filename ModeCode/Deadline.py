@@ -17,7 +17,7 @@ def load_json():
     ddl_list = sorted(ddl_list,key=ddl_cmp)
     return ddl_list
 
-def getddl():
+def ddl(update,context):
     msg_str_all = "Here are the TODO list:\n"
     msg_str_warning = "\033[1;31m"
     ddl_list = load_json()
@@ -27,4 +27,7 @@ def getddl():
         if item_datetime <= now + datetime.timedelta(days=7):
             msg_str_warning += (item_datetime.ctime() + " " + x['todo'] + "\n")
     msg_str_warning += "\033[0m"
-    return [msg_str_all,msg_str_warning]
+    context.bot.send_message(chat_id=update.effective_chat.id, text=msg_str_all)
+
+
+    

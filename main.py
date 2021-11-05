@@ -1,4 +1,5 @@
 from telegram.ext import Updater
+import sys
 import logging
 
 with open("token.secret.me","r") as f:
@@ -24,11 +25,18 @@ dispatcher.add_handler(start_handler)
 # print ddl list
 from ModeCode.Deadline import *
 
-def ddl(update, context):
-    msg_list = getddl()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=msg_list[0])
-
 ddl_handler = CommandHandler('ddl', ddl)
 dispatcher.add_handler(ddl_handler)
+# end
+
+# a stop command
+def stop(update,context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Have a nice day! Goodbye!") 
+    updater.stop()
+    sys.exit(0)
+
+stop_handler = CommandHandler('stop', stop)
+dispatcher.add_handler(stop_handler)
+
 
 updater.start_polling()
