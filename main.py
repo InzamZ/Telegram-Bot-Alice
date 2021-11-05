@@ -3,7 +3,9 @@ import sys
 import logging
 
 with open("token.secret.me","r") as f:
-    TOKEN = f.read()
+    TOKEN = f.readline()
+    TOKEN = TOKEN.strip()
+    f.close()
 
 updater = Updater(token=TOKEN, use_context=True)
 
@@ -39,4 +41,4 @@ stop_handler = CommandHandler('stop', stop)
 dispatcher.add_handler(stop_handler)
 
 
-updater.start_polling()
+updater.start_polling(timeout=3)
