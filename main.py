@@ -40,5 +40,4 @@ def stop(update,context):
 stop_handler = CommandHandler('stop', stop)
 dispatcher.add_handler(stop_handler)
 
-
 updater.start_polling(timeout=3)
