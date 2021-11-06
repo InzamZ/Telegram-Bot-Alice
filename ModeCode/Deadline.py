@@ -2,7 +2,7 @@ import json
 from json import encoder
 import random
 import datetime
-from telegram import ParseMode
+from telegram import ParseMode, parsemode
 
 timezone = datetime.timezone(datetime.timedelta(hours=8))
 now = datetime.datetime.now(timezone)
@@ -142,8 +142,9 @@ def ddl(update, context):
                 # print(ddl_list)
                 save_json(src=ddl_list)
     else:
-        context.bot.send_message(
-            chat_id=update.effective_chat.id, text="Invilid command! " + "'" + context.args[0] + "'")
+        with open("./Help/ddl.md", "r") as f:
+            context.bot.send_message(
+                chat_id=update.effective_chat.id, parse_mode=ParseMode.MARKDOWN_V2, text=f.read())
 
 
 if __name__ == "__main__":
