@@ -118,6 +118,13 @@ def ddl(update, context):
                         chat_id=update.effective_chat.id, text="Updated " + temp['todo'] + " " + update_datetime.isoformat() + " !\n")
                     # print(ddl_list)
                     save_json(src=ddl_list)
+                elif context.args[2] == "todo":
+                    temp = ddl_list[update_id]
+                    temp[context.args[2]] = context.args[3]
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id, text="Updated " + context.args[3] + " " + temp['deadline'] + " !\n")
+                    # print(ddl_list)
+                    save_json(src=ddl_list)
                 else:
                     context.bot.send_message(
                         chat_id=update.effective_chat.id, text=("ERROR: Invalid isoformat string!" + context.args[3]))
