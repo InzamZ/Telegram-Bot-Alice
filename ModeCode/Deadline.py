@@ -163,7 +163,7 @@ def ddl(update, context):
         with open("./Help/ddl.md", "r") as f:
             context.bot.send_message(
                 chat_id=update.effective_chat.id, parse_mode=ParseMode.MARKDOWN_V2, text=f.read())
-
+            f.close()
 
 if __name__ == "__main__":
     msg_str = "Here are the *TODO* list:\n"
