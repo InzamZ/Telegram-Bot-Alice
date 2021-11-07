@@ -56,7 +56,7 @@ def ddl(update, context):
         # print("add")
         if (len(context.args) != 3):
             context.bot.send_message(
-                chat_id=update.effective_chat.id, text="Wrong number args!")
+                chat_id=update.effective_chat.id, text="ERROR: 3 args expected but " + str(len(context.args)) + " received")
 #            msg_str += "{id} \n"
 #            msg_str += "Example: **\n"
 #            context.bot.send_message(chat_id=update.effective_chat.id,
@@ -68,8 +68,6 @@ def ddl(update, context):
                     context.args[1])
             except Exception:
                 Exc = True
-                context.bot.send_message(
-                    chat_id=update.effective_chat.id, text=("Invalid isoformat string!" + context.args[1]))
             finally:
                 pass
             if (Exc == False and (context.args[2] != "")):
@@ -80,15 +78,17 @@ def ddl(update, context):
                         'todo': context.args[2]}
                 ddl_list.append(temp)
                 # print(ddl_list)
-                save_json(src=ddl_list)
-            elif Exc == False:
                 context.bot.send_message(
-                    chat_id=update.effective_chat.id, text="Invilid args(3nd)! " + "'" + context.args[2] + "'")
+                    chat_id=update.effective_chat.id, text="Added " + temp['deadline'] + " " + temp['todo'] + " !\n")
+                save_json(src=ddl_list)
+            else:
+                context.bot.send_message(
+                    chat_id=update.effective_chat.id, text=("ERROR: Invalid isoformat string. " + context.args[1]) + " !\n")
 
     elif context.args[0] == "update":
         if (len(context.args) != 4):
             context.bot.send_message(
-                chat_id=update.effective_chat.id, text="Wrong number args!")
+                chat_id=update.effective_chat.id, text="ERROR: 4 args expected but " + str(len(context.args)) + " received.")
 #            msg_str += "{id} \n"
 #            msg_str += "Example: **\n"
 #            context.bot.send_message(chat_id=update.effective_chat.id,
@@ -97,7 +97,7 @@ def ddl(update, context):
             update_id = int(context.args[1])
             if (update_id >= len(ddl_list)):
                 context.bot.send_message(
-                    chat_id=update.effective_chat.id, text="Invilid args!")
+                    chat_id=update.effective_chat.id, text="ERROR: Id is not existed! " + str(update_id) + " .\n")
             else:
                 Exc = False
                 try:
@@ -105,42 +105,53 @@ def ddl(update, context):
                         context.args[3])
                 except Exception:
                     Exc = True
-                    context.bot.send_message(
-                        chat_id=update.effective_chat.id, text=("Invalid isoformat string!" + context.args[3]))
                 finally:
                     pass
-                if (Exc == False and (context.args[2] == "deadline" or context.args[2] == "todo")):
-                    items = ["deadline", "todo"]
-                    print(type(ddl_list[0]))
+                if (Exc == False and context.args[2] == "deadline"):
+                    # print(type(ddl_list[0]))
                     if update_datetime.tzinfo == None:
                         update_datetime = datetime.datetime.fromisoformat(
                             update_datetime.isoformat()+"+08:00")
                     temp = ddl_list[update_id]
                     temp[context.args[2]] = update_datetime.isoformat()
-                    print(ddl_list)
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id, text="Updated " + temp['todo'] + " " + update_datetime.isoformat() + " !\n")
+                    # print(ddl_list)
                     save_json(src=ddl_list)
                 else:
                     context.bot.send_message(
-                        chat_id=update.effective_chat.id, text="Invilid args (3rd)! " + "'" + context.args[2] + "'")
+                        chat_id=update.effective_chat.id, text=("ERROR: Invalid isoformat string!" + context.args[3]))
         else:
             context.bot.send_message(
-                chat_id=update.effective_chat.id, text="Invilid args (2nd)! " + "'" + context.args[1] + "'")
+                chat_id=update.effective_chat.id, text="ERROR: Id is invilid! " + context.args[1] + " \n")
 #        context.bot.send_message(chat_id=update.effective_chat.id,
 #                                 parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
     elif context.args[0] == "finish":
         # print("finish")
         if (len(context.args) != 2):
             context.bot.send_message(
-                chat_id=update.effective_chat.id, text="Wrong number args!")
+                chat_id=update.effective_chat.id, text="ERROR: 2 args expected but " + str(len(context.args)) + " received")
         elif (context.args[1].isdigit()):
             finish_id = int(context.args[1])
             if (finish_id >= len(ddl_list)):
                 context.bot.send_message(
-                    chat_id=update.effective_chat.id, text="Invilid args!")
+                    chat_id=update.effective_chat.id, text="ERROR: Id is not existed! " + str(finish_id) + ' \n')
             else:
+                finish_item = ddl_list[finish_id]
+                # context.bot.send_message(
+                #    chat_id=update.effective_chat_id, text="Remove " + ddl_list[finish_id])
+                context.bot.send_message(
+                    chat_id=update.effective_chat.id, text="Remove " + finish_item['deadline'] + " " + finish_item['todo'] + "\n")
                 ddl_list.pop(finish_id)
-                # print(ddl_list)
                 save_json(src=ddl_list)
+                # TODO:增加二次确认
+                # if confirm_str.strip() == "yes":
+                #    ddl_list.pop(finish_id)
+                #    save_json(src=ddl_list)
+                # else:
+                #    print(
+                #        "Remove " + finish_item['deadline'] + " " + finish_item['todo'] + " (yes/other)\n")
+
     else:
         with open("./Help/ddl.md", "r") as f:
             context.bot.send_message(
