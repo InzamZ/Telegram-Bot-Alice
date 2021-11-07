@@ -46,10 +46,17 @@ def get_ddl_msg(ddl_list):
     return msg_str
 
 
+def daily_notice(bot, id):
+    ddl_list = load_json()
+    bot.send_message(chat_id=id,
+                     parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
+
+
 def ddl(update, context):
     ddl_list = load_json()
     if (len(context.args) == 0):
         # print(get_ddl_msg(ddl_list))
+        print(update.effective_chat.id)
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
     elif context.args[0] == "add":
@@ -164,6 +171,7 @@ def ddl(update, context):
             context.bot.send_message(
                 chat_id=update.effective_chat.id, parse_mode=ParseMode.MARKDOWN_V2, text=f.read())
             f.close()
+
 
 if __name__ == "__main__":
     msg_str = "Here are the *TODO* list:\n"
