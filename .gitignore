@@ -1,4 +1,5 @@
 *.secret.me
+Data/*
 Data/
 
 # Byte-compiled / optimized / DLL files
