@@ -1,7 +1,9 @@
 from telegram import update
 from telegram.ext import CommandHandler, MessageHandler
+from ModeCode import LoadConf
 from ModeCode.Deadline import *
-from telegram.ext import Updater, JobQueue
+from ModeCode.LoadConf import *
+from telegram.ext import Updater
 import sys
 import logging
 import datetime
@@ -11,8 +13,7 @@ with open("token.secret.me", "r") as f:
     TOKEN = TOKEN.strip()
     f.close()
 
-
-updater = Updater(token=TOKEN, use_context=True)
+updater = Updater(token=LoadConf.conf['token'], use_context=True)
 bot = updater.bot
 jobqueue = updater.job_queue
 dispatcher = updater.dispatcher
@@ -35,8 +36,7 @@ dispatcher.add_handler(start_handler)
 
 # ddl
 
-jobqueue.run_daily(ddl_daily_notice, name="ddl_daily_notice", time=datetime.time(
-    hour=0, minute=0))
+jobqueue.run_daily(ddl_daily_notice, name="ddl_daily_notice", time=datetime.time.fromisoformat(LoadConf.conf['time']))
 ddl_handler = CommandHandler('ddl', ddl)
 dispatcher.add_handler(ddl_handler)
 

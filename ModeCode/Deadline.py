@@ -3,6 +3,8 @@ from json import encoder
 import random
 import datetime
 from telegram import ParseMode, parsemode
+from ModeCode import LoadConf
+from ModeCode.LoadConf import *
 
 timezone = datetime.timezone(datetime.timedelta(hours=8))
 now = datetime.datetime.now(timezone)
@@ -52,7 +54,9 @@ def get_ddl_msg(ddl_list):
 
 def ddl_daily_notice(context):
     ddl_list = load_json()
-    context.bot.send_message(chat_id=ME,
+    context.bot.send_message(chat_id=LoadConf.conf['me'],
+                     parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
+    context.bot.send_message(chat_id=LoadConf.conf['my_channel'],
                      parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
 
 
