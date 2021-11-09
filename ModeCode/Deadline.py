@@ -3,10 +3,11 @@ from json import encoder
 import random
 import datetime
 from telegram import ParseMode, parsemode
+from ModeCode import LoadConf
+from ModeCode.LoadConf import *
 
 timezone = datetime.timezone(datetime.timedelta(hours=8))
 now = datetime.datetime.now(timezone)
-
 
 def ddl_cmp(a):
     return datetime.datetime.fromisoformat(a['deadline'])
@@ -46,10 +47,20 @@ def get_ddl_msg(ddl_list):
     return msg_str
 
 
+def ddl_daily_notice(context):
+    ddl_list = load_json()
+    context.bot.send_message(chat_id=LoadConf.conf['me'],
+                     parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
+    # 你可以发送到自己的channel
+    # context.bot.send_message(chat_id=LoadConf.conf['my_channel'],
+    #                  parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
+
+
 def ddl(update, context):
     ddl_list = load_json()
     if (len(context.args) == 0):
         # print(get_ddl_msg(ddl_list))
+        print(update.effective_chat.id)
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
     elif context.args[0] == "add":
@@ -163,6 +174,7 @@ def ddl(update, context):
         with open("./Help/ddl.md", "r") as f:
             context.bot.send_message(
                 chat_id=update.effective_chat.id, parse_mode=ParseMode.MARKDOWN_V2, text=f.read())
+            f.close()
 
 
 if __name__ == "__main__":
