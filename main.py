@@ -1,4 +1,5 @@
-from telegram.ext import CommandHandler
+from telegram import update
+from telegram.ext import CommandHandler, MessageHandler
 from ModeCode.Deadline import *
 from telegram.ext import Updater, JobQueue
 import sys
@@ -10,10 +11,6 @@ with open("token.secret.me", "r") as f:
     TOKEN = TOKEN.strip()
     f.close()
 
-with open("id.secret.me", "r") as f:
-    ME = f.readline()
-    ME = ME.strip()
-    f.close()
 
 updater = Updater(token=TOKEN, use_context=True)
 bot = updater.bot
@@ -36,14 +33,13 @@ dispatcher.add_handler(start_handler)
 
 # end
 
-# print ddl list
+# ddl
 
-# TODO:不能使用context send message，考虑如何发送给自己
-print(ME)
-jobqueue.run_daily(daily_notice(bot, ME), name="daily_notice", time=datetime.time(
-    hour=16, minute=24, tzinfo=timezone.utc))
+jobqueue.run_daily(ddl_daily_notice, name="ddl_daily_notice", time=datetime.time(
+    hour=0, minute=0))
 ddl_handler = CommandHandler('ddl', ddl)
 dispatcher.add_handler(ddl_handler)
+
 # end
 
 # a stop command
