@@ -9,11 +9,6 @@ from ModeCode.LoadConf import *
 timezone = datetime.timezone(datetime.timedelta(hours=8))
 now = datetime.datetime.now(timezone)
 
-with open("id.secret.me", "r") as f:
-    ME = f.readline()
-    ME = ME.strip()
-    f.close()
-
 def ddl_cmp(a):
     return datetime.datetime.fromisoformat(a['deadline'])
 
@@ -56,8 +51,9 @@ def ddl_daily_notice(context):
     ddl_list = load_json()
     context.bot.send_message(chat_id=LoadConf.conf['me'],
                      parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
-    context.bot.send_message(chat_id=LoadConf.conf['my_channel'],
-                     parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
+    # 你可以发送到自己的channel
+    # context.bot.send_message(chat_id=LoadConf.conf['my_channel'],
+    #                  parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
 
 
 def ddl(update, context):

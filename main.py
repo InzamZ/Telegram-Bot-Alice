@@ -8,11 +8,6 @@ import sys
 import logging
 import datetime
 
-with open("token.secret.me", "r") as f:
-    TOKEN = f.readline()
-    TOKEN = TOKEN.strip()
-    f.close()
-
 updater = Updater(token=LoadConf.conf['token'], use_context=True)
 bot = updater.bot
 jobqueue = updater.job_queue
