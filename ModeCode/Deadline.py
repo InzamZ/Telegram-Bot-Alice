@@ -2,7 +2,7 @@ import json
 from json import encoder
 import random
 import datetime
-from telegram import ParseMode, parsemode
+from telegram import ParseMode
 from ModeCode import LoadConf
 from ModeCode.LoadConf import *
 
@@ -49,10 +49,10 @@ def get_ddl_msg(ddl_list):
 
 def ddl_daily_notice(context):
     ddl_list = load_json()
-    context.bot.send_message(chat_id=LoadConf.conf['me'],
+    context.bot.send_message(chat_id=LoadConf.conf['bot']['me'],
                      parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
     # 你可以发送到自己的channel
-    # context.bot.send_message(chat_id=LoadConf.conf['my_channel'],
+    # context.bot.send_message(chat_id=LoadConf.conf['bot']['my_channel'],
     #                  parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
 
 

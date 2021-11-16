@@ -8,7 +8,7 @@ import sys
 import logging
 import datetime
 
-updater = Updater(token=LoadConf.conf['token'], use_context=True)
+updater = Updater(token=LoadConf.conf['bot']['token'], use_context=True)
 bot = updater.bot
 jobqueue = updater.job_queue
 dispatcher = updater.dispatcher
