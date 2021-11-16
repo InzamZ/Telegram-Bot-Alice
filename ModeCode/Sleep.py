@@ -39,3 +39,5 @@ print(msg)
 
 bot.send_message(chat_id=LoadConf.conf['bot']['sleepinfo_id'],
                      parse_mode=ParseMode.MARKDOWN_V2, text=msg)
+
+updater.stop()
