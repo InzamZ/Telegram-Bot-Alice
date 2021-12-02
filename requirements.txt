@@ -5,7 +5,6 @@ aiohttp-socks==0.6.0
 aiosignal==1.2.0
 appdirs==1.4.3
 APScheduler==3.6.3
-apturl==0.5.2
 async-timeout==4.0.1
 attrs==21.2.0
 autopep8==1.6.0
