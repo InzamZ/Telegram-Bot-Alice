@@ -5,7 +5,8 @@ aiohttp-socks==0.6.0
 aiosignal==1.2.0
 appdirs==1.4.3
 APScheduler==3.6.3
-async-timeout==4.0.1
+apturl==0.5.2
+async-timeout==3.0.1
 attrs==21.2.0
 autopep8==1.6.0
 backports.entry-points-selectable==1.1.0
@@ -13,6 +14,7 @@ backports.zoneinfo==0.2.1
 bcrypt==3.1.7
 beautifulsoup4==4.10.0
 blinker==1.4
+Brlapi==0.7.0
 cachetools==4.2.2
 cchardet==2.1.7
 certifi==2021.10.8
@@ -31,6 +33,7 @@ defer==1.0.6
 distlib==0.3.3
 distro==1.4.0
 distro-info===0.23ubuntu1
+dnspython==1.16.0
 duplicity==0.8.12.0
 elasticsearch==7.15.2
 entrypoints==0.3
@@ -79,6 +82,7 @@ pycairo==1.16.2
 pycares==4.1.2
 pycodestyle==2.8.0
 pycparser==2.21
+pycrypto==2.6.1
 pycups==1.9.73
 PyGObject==3.36.0
 pyicloud==0.10.2
@@ -120,11 +124,10 @@ telegram==0.0.1
 testresources==2.0.1
 toml==0.10.2
 tornado==6.1
-twint==2.1.20
 typing-extensions==4.0.0
 tzdata==2021.5
 tzlocal==2.0.0
-ubuntu-advantage-tools==27.3
+ubuntu-advantage-tools==27.4
 ubuntu-drivers-common==0.0.0
 ufw==0.36
 ujson==4.2.0
