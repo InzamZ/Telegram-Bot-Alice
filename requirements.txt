@@ -34,7 +34,7 @@ distlib==0.3.3
 distro==1.4.0
 distro-info===0.23ubuntu1
 dnspython==1.16.0
-duplicity==0.8.12.0
+duplicity==0.8.12.1618
 elasticsearch==7.15.2
 entrypoints==0.3
 fake-useragent==0.1.11
