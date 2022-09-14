@@ -14,14 +14,14 @@ proxies = {
 }
 
 
-def GetUserList(CfgFilePath="./Data/CodeforcesPeekingTom.cfg")-> List:
-    with open(CfgFilePath, "r", newline="", encoding="GBK") as f:
+def GetUserList(CfgFilePath="./Data/CodeforcesPeekingTom.cfg") -> List:
+    with open(CfgFilePath, "r", newline="", encoding='utf8') as f:
         userList = json.load(f)
     return userList
 
 
 def UpdateUserList(userList, CfgFilePath="./Data/CodeforcesPeekingTom.cfg"):
-    with open(CfgFilePath, "w", newline="", encoding="GBK") as f:
+    with open(CfgFilePath, "w", newline="", encoding="utf8") as f:
         f.write(json.dumps(userList, sort_keys=True, indent=4))
 
 
@@ -173,7 +173,7 @@ async def CodeforcesPeekingTomAddUser(update: Update,
     userList.append(user)
     UpdateUserList(userList)
     await context.bot.send_message(chat_id=chat_id, parse_mode=constants.ParseMode.HTML, text="I am peeking a new user <b>{UserHandle}</b>!".format(
-        UserHandle = UserHandle
+        UserHandle=UserHandle
     ))
 
 if "__main__" == __name__:

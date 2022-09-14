@@ -1,3 +1,4 @@
+# coding=utf8
 from tokenize import Token
 from telegram.ext import Application, CommandHandler, ContextTypes
 
@@ -33,7 +34,6 @@ def stop(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              parse_mode=constants.ParseMode.MARKDOWN_V2, text="Have a nice day! Goodbye!")
     sys.exit(0)
-
 
 TOKEN = sys.argv[1]
 application = Application.builder().token(TOKEN).build()
