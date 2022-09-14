@@ -2,7 +2,7 @@ import json
 from json import encoder
 import random
 import datetime
-from telegram import ParseMode
+from telegram import Update,constants
 
 timezone = datetime.timezone(datetime.timedelta(hours=8))
 now = datetime.datetime.now(timezone)
@@ -51,7 +51,7 @@ def ddl(update, context):
     if (len(context.args) == 0):
         # print(get_ddl_msg(ddl_list))
         context.bot.send_message(chat_id=update.effective_chat.id,
-                                 parse_mode=ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
+                                 parse_mode=constants.ParseMode.MARKDOWN_V2, text=get_ddl_msg(ddl_list))
     elif context.args[0] == "add":
         # print("add")
         if (len(context.args) != 3):

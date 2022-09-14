@@ -1,43 +1,49 @@
-from telegram.ext import Updater
+from tokenize import Token
+from telegram.ext import Application, CommandHandler, ContextTypes
+
 import sys
 import logging
 
-with open("token.secret.me","r") as f:
-    TOKEN = f.readline()
-    TOKEN = TOKEN.strip()
-    f.close()
+from ModeCode.CodeforcesPeekingTom.GetCodeforcesStatus import (
+    CodeforcesPeekingTomAddUser, CodeforcesPeekingTomStart, CodeforcesPeekingTomStartChannelById, CodeforcesPeekingTomStartChannelByName, PeekingYou)
+from ModeCode.Deadline import *
+from ModeCode.CodeforcesPeekingTom import *
+from telegram.ext import CommandHandler
 
-updater = Updater(token=TOKEN, use_context=True)
+proxy = '127.0.0.1:7890'
+proxies = {
+    'http': 'http://' + proxy,
+    'https': 'http://' + proxy,
+}
 
-dispatcher = updater.dispatcher
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 # check if the bot is working
+
+
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
-
-from telegram.ext import CommandHandler
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
-
-#end
-
-# print ddl list
-from ModeCode.Deadline import *
-
-ddl_handler = CommandHandler('ddl', ddl)
-dispatcher.add_handler(ddl_handler)
-# end
+    context.bot.send_message(
+        chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
 # a stop command
-def stop(update,context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Have a nice day! Goodbye!") 
-    updater.stop()
+
+
+def stop(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             parse_mode=constants.ParseMode.MARKDOWN_V2, text="Have a nice day! Goodbye!")
     sys.exit(0)
 
-stop_handler = CommandHandler('stop', stop)
-dispatcher.add_handler(stop_handler)
 
-updater.start_polling(timeout=3)
+TOKEN = sys.argv[1]
+application = Application.builder().token(TOKEN).build()
+application.add_handler(CommandHandler(["start", "help"], start))
+application.add_handler(CommandHandler(
+    'CFPeekingTomStart', CodeforcesPeekingTomStart))
+application.add_handler(CommandHandler(
+    'CFPeekingTomStartChannel', CodeforcesPeekingTomStartChannelByName))
+application.add_handler(CommandHandler(
+    'CFPeekingTomAddUser', CodeforcesPeekingTomAddUser))
+application.add_handler(CommandHandler('stop', stop))
+application.add_handler(CommandHandler('ddl', ddl))
+application.run_polling()
