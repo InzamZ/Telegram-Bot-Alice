@@ -11,6 +11,4 @@ COPY ./requirements.txt /requirements.txt
 
 RUN pip install -r requirements.txt
 
-# final configuration
-ENV TOKEN=TOKEN
 CMD python3 /tgb/main.py TOKEN

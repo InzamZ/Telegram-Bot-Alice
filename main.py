@@ -36,6 +36,7 @@ def stop(update, context):
     sys.exit(0)
 
 TOKEN = sys.argv[1]
+print(TOKEN)
 application = Application.builder().token(TOKEN).build()
 application.add_handler(CommandHandler(["start", "help"], start))
 application.add_handler(CommandHandler(
